@@ -1,0 +1,146 @@
+.about-us-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(45deg, #a0522d, #d2691e);
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  font-family: "Arial", sans-serif;
+  z-index: 1000;
+}
+.about-us-bar p {
+  margin: 8px 20px;
+  font-weight: 500;
+  line-height: 1.6;
+  font-size: 18px;
+  color: #f0e68c; /* إضافة لون ذهبي فاتح للنص */
+}
+
+/* تنسيق المعلومات الخاصة بـ "Contact" داخل الشريط */
+.about-us-bar .contact-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  text-align: left;
+  width: 100%;
+  max-width: 1000px; /* لتقييد العرض */
+  margin: 0 auto;
+}
+
+.about-us-bar .contact-info div {
+  margin: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.about-us-bar .contact-info div p {
+  font-size: 18px;
+  color: #ffd700; /* استخدام اللون الذهبي المشرق */
+  font-style: italic;
+}
+
+.about-us-bar .contact-info div .title {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* تحسين تصميم الزر ليظل ثابتًا أعلى الصفحة */
+.button-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-container:hover {
+  background-color: transparent;
+}
+
+/* تنسيق محتوى "About Us" مع إضافة مسافة بينه وبين الزر */
+.about-us-container {
+  margin-top: 120px; /* زيادة المسافة بين الزر والمحتوى */
+  padding: 20px;
+  background-color: #f4f4f4; /* خلفية فاتحة للمحتوى */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* تحسين التفاعل مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .about-us-bar {
+    font-size: 14px; /* تقليص حجم الخط على الشاشات الصغيرة */
+    padding: 15px;
+  }
+
+  .about-us-bar .contact-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-us-bar .contact-info div {
+    min-width: 100%; /* ملء المساحة بالكامل على الشاشات الصغيرة */
+    margin: 10px 0;
+  }
+
+  .button-container {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .about-us-container {
+    margin-top: 90px; /* تقليل المسافة بين الزر والمحتوى */
+  }
+}
+
+/* شاشات الهاتف المحمول */
+@media (max-width: 480px) {
+  .about-us-bar {
+    font-size: 12px; /* تقليص حجم الخط بشكل أكبر في الهواتف الصغيرة */
+    padding: 10px;
+  }
+
+  .about-us-bar .contact-info div p {
+    font-size: 16px; /* تقليص حجم الخط داخل المعلومات */
+  }
+
+  .button-container {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .about-us-container {
+    margin-top: 70px; /* تقليل المسافة بين الزر والمحتوى */
+  }
+}
+.about-us-bar {
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
