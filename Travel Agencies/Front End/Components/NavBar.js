@@ -26,7 +26,7 @@ export default function Nav() {
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
         <ul className="sidebar-links">
           <li onClick={toggleSidebar}>
-            <Link to="/Home">Home 🏠 </Link>
+            <Link to="/Home">Home 🏠</Link>
           </li>
 
           {!localStorage.getItem("Token") ? (
@@ -36,11 +36,16 @@ export default function Nav() {
                   Login
                 </Link>
               </li>
+              <li onClick={toggleSidebar}>
+                <Link to="/signup" style={{ color: "grey" }}>
+                  Signup
+                </Link>
+              </li>
             </>
           ) : (
             <>
               <li onClick={toggleSidebar}>
-                <Link to="/MyProfile">My Profile </Link>
+                <Link to="/MyProfile">My Profile</Link>
               </li>
               <li onClick={toggleSidebar}>
                 <Link to="/Orders">My Orders🛒</Link>
@@ -56,6 +61,9 @@ export default function Nav() {
               </li>
             </>
           )}
+          <li onClick={toggleSidebar}>
+            <Link to="/OurPrivacyAndTerms">Privacy And Terms</Link>
+          </li>
         </ul>
       </div>
     </nav>
