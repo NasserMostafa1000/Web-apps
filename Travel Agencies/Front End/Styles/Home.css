@@ -1,29 +1,37 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  padding-bottom: 60px; /* إضافة مساحة أسفل الصفحة لتفادي التداخل مع الشريط الثابت */
-  padding-top: 20px; /* إضافة مسافة من الأعلى */
-  overflow-x: hidden; /* التأكد من عدم وجود تمرير أفقي غير مرغوب فيه */
+  padding-bottom: 60px;
+  padding-top: 30px;
+  overflow-x: hidden;
 }
 
 .visa-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: orange;
+  background-color: rgba(205, 109, 18, 0.1);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 300px; /* تحديد الحد الأقصى للعرض */
+  max-width: 310px;
   padding: 20px;
   margin: 10px;
-  box-sizing: border-box; /* لضمان احتساب الحواف بشكل صحيح */
-  flex-grow: 1; /* يسمح بتوسيع الفيز داخل الحاوية */
+  box-sizing: border-box;
+  flex-grow: 1;
+  margin-top: 50px;
+  transition: transform 0.2s;
+  border: 2px solid #f39c12;
+}
+
+.visa-container:hover {
+  transform: scale(1.05);
 }
 
 .visa-image img {
-  width: 100%;
-  height: auto;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
@@ -35,7 +43,7 @@ body {
 .visa-name {
   font-size: 1.6rem;
   font-weight: bold;
-  color: #333;
+  color: #e3eaeb;
 }
 
 .visa-info {
@@ -51,7 +59,7 @@ body {
 .label {
   font-size: 1rem;
   font-weight: normal;
-  color: #555;
+  color: #e3eaeb;
 }
 
 .amount,
@@ -69,12 +77,12 @@ body {
 .extra-info-title {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #333;
+  color: #e3eaeb;
 }
 
 .extra-info-description {
-  font-size: 1rem;
-  color: #666;
+  font-size: 1.5rem;
+  color: #0000008d;
   margin-top: 8px;
 }
 
@@ -110,15 +118,22 @@ body {
   background-color: #e67e22;
 }
 
+.visa-container {
+  border: 2px solid #ffeb3d;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
 /* تحسين التفاعل مع الشاشات الصغيرة */
 @media (max-width: 768px) {
   .visa-container {
-    max-width: 90%; /* تقليل العرض ليكون مناسبًا للشاشات الصغيرة */
-    margin: 15px auto; /* إضافة مسافة بين العناصر */
+    max-width: 90%;
+    margin: 15px auto;
   }
 
   .visa-name {
-    font-size: 1.4rem; /* تقليل حجم النص في العنوان */
+    font-size: 1.4rem;
   }
 
   .visa-price,
@@ -126,36 +141,35 @@ body {
   .label,
   .amount,
   .duration {
-    font-size: 1rem; /* تقليل حجم النصوص في التفاصيل */
+    font-size: 1rem;
   }
 
   .visa-buttons {
-    margin-top: 15px; /* تقليل المسافة بين الأزرار */
+    margin-top: 15px;
   }
 
   .visa-button {
-    font-size: 0.9rem; /* تقليل حجم الخط في الأزرار */
-    padding: 8px 16px; /* تقليل حجم الأزرار */
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
 }
 
 @media (max-width: 480px) {
   .visa-container {
-    max-width: 95%; /* جعل العنصر يأخذ المساحة الأكبر على الشاشات الصغيرة جدًا */
-    margin: 10px auto;
-    padding: 15px; /* تقليل الحشو */
+    max-width: 95%;
+    padding: 15px;
   }
 
   .visa-name {
-    font-size: 1.2rem; /* تقليص حجم العنوان على الشاشات الصغيرة جدًا */
+    font-size: 1.2rem;
   }
 
   .visa-buttons {
-    margin-top: 10px; /* تقليل المسافة بين الأزرار */
+    margin-top: 10px;
   }
 
   .visa-button {
-    font-size: 0.9rem; /* تقليص حجم الأزرار بشكل أكبر */
-    padding: 6px 12px; /* تقليل الحشو في الأزرار */
+    font-size: 0.9rem;
+    padding: 6px 12px;
   }
 }
