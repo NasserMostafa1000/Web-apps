@@ -1,66 +1,235 @@
-import React from "react";
-import "../Styles/Visa.css"; // يمكنك إضافة ملف CSS لتنسيق المكونات
+import React, { useEffect, useState } from "react";
+import "../Styles/Visa.css";
 
+const _HttpClient = "https://ramysalama2000-001-site1.otempurl.com/api/";
 export default function Visa({ VisaObj }) {
-  if (VisaObj.moreDetails === "غير متوفر") {
-    return null; // لا يتم عرض الفيز إذا كانت التفاصيل غير متوفرة
+  const [clientData, setClientData] = useState(null);
+  const [errorNotify, setErrorNotify] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem("Token");
+  const clientId = Number(localStorage.getItem("Id"));
+  useEffect(() => {
+    const fetchClientData = async () => {
+      if (!token || !clientId) {
+        setErrorNotify("Missing authentication details. Please login again.");
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${_HttpClient}Clients/FindClient`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            clientId: Number(clientId),
+            token: token,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch client data: ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+        setClientData(data);
+      } catch (error) {
+        setErrorNotify(`Error fetching client data: ${error.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchClientData();
+  }, []);
+
+  async function handleIsuueClick(Price, id) {
+    const token = localStorage.getItem("Token");
+    if (token == null) {
+      setErrorNotify("Not Authorized You Must Login First");
+      window.location.pathname = "/Login";
+      return;
+    }
+    //this if statment handle PayWith Internal Balance
+    if (Number(clientData.balance) >= Price) {
+      const response = await fetch(
+        `${_HttpClient}InternalBalance/PayWithInternalBalance`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Token: token,
+            ClientID: clientId,
+            Amount: Price,
+          }),
+        }
+      );
+      //this if statment handle add the order if the Client have enough internal balance
+      if (response.ok) {
+        const AddOrderresponse = await fetch(`${_HttpClient}Orders/AddOrder`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Token: token,
+            ClientID: clientId,
+            VisaId: id,
+            OrderTypeId: 1,
+          }),
+        });
+        if (AddOrderresponse.ok) {
+          alert("Order Has Been Added Successfully");
+        } else {
+          setErrorNotify("Failed");
+        }
+      } else {
+        setErrorNotify("Error in payment:", response.statusText);
+      }
+    } else {
+      window.location.pathname = "/PayWithVisa";
+    }
   }
 
-  function handleIsuueClick(Price, id) {
-    console.log("Issue ID " + id);
-    console.log("Issue Price" + Price);
+  async function handleRenewClick(Price, id) {
+    const token = localStorage.getItem("Token");
+    if (token == null) {
+      setErrorNotify("Not Authorized You Must Login First");
+      window.location.pathname = "/Login";
+      return;
+    }
+    if (Number(clientData.balance) >= Price) {
+      const response = await fetch(
+        `${_HttpClient}InternalBalance/PayWithInternalBalance`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Token: token,
+            ClientID: clientId,
+            Amount: Price,
+          }),
+        }
+      );
+      if (response.ok) {
+        const AddOrderresponse = await fetch(`${_HttpClient}Orders/AddOrder`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Token: token,
+            ClientID: clientId,
+            VisaId: id,
+            OrderTypeId: 2,
+          }),
+        });
+        if (AddOrderresponse.ok) {
+          alert("Order Has Been Added Successfully");
+        } else {
+          setErrorNotify("Failed");
+        }
+      } else {
+        setErrorNotify("Error in payment:", response.statusText);
+      }
+    } else {
+      window.location.pathname = "/PayWithVisa";
+    }
   }
 
-  function handleRenewClick(Price, id) {
-    console.log("Issue ID " + id);
-    console.log("Issue Price" + Price);
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="visa-container">
-      <div className="visa-image">
-        <img src={VisaObj.imagePath} alt={VisaObj.name} />
-      </div>
-      <div className="visa-details">
-        <h2 className="visa-name"> {VisaObj.name}</h2>
-        <div className="visa-info">
-          <div className="visa-price">
-            <span className="label">Issuance Price:</span>
-            <span className="amount"> {VisaObj.issuancePrice} AED</span>
-          </div>
-          <div className="visa-price">
-            <span className="label">Renewal Price:</span>
-            <span className="amount"> {VisaObj.renewalPrice} AED</span>
-          </div>
-          <div className="visa-duration">
-            <span className="label">Visa Duration:</span>
-            <span className="duration">{VisaObj.period} Month/s</span>
-          </div>
+    <>
+      {errorNotify && (
+        <div className="error-notify" style={{ color: "black" }}>
+          {errorNotify}
         </div>
-        {/* قسم معلومات إضافية عن الفيزه */}
-        <div className="visa-extra-info">
-          <h3 className="extra-info-title">Visa Information</h3>
-          <p className="extra-info-description">{VisaObj.moreDetails}</p>
-        </div>
-        <div className="visa-buttons">
-          <button
-            className="visa-button issue-button"
-            onClick={() =>
-              handleIsuueClick(VisaObj.issuancePrice, VisaObj.visaId)
+      )}
+
+      <div className="visa-container">
+        <div className="visa-image">
+          <img
+            src={
+              "https://ramysalama2000-001-site1.otempurl.com/" +
+              VisaObj.imagePath
             }
-          >
-            Issue Visa
-          </button>
-          <button
-            className="visa-button renew-button"
-            onClick={() =>
-              handleRenewClick(VisaObj.renewalPrice, VisaObj.visaId)
-            }
-          >
-            Renew Visa
-          </button>
+            alt={VisaObj.name}
+          />
+        </div>
+        <div className="visa-details">
+          <h2 className="visa-name"> {VisaObj.name}</h2>
+          <div className="visa-info">
+            <div className="visa-price">
+              <span className="label">Issuance Price:</span>
+              <span className="amount">
+                {" "}
+                {VisaObj.issuancePrice}{" "}
+                <span style={{ color: "white" }}>AED</span>
+              </span>
+            </div>
+            {VisaObj.renewalPrice !== 0 && (
+              <div className="visa-price">
+                <span className="label">Renewal Price:</span>
+                <span className="amount">
+                  {" "}
+                  {VisaObj.renewalPrice}{" "}
+                  <span style={{ color: "white" }}>AED</span>
+                </span>
+              </div>
+            )}
+            <div className="visa-duration">
+              <span className="label">Duration: </span>
+              <span className="duration">
+                {" "}
+                {VisaObj.period} <span style={{ color: "white" }}>Month/s</span>{" "}
+              </span>
+            </div>
+          </div>
+
+          <div className="visa-extra-info">
+            <h3 className="extra-info-title">About:-</h3>
+            <p className="extra-info-description">{VisaObj.moreDetails}</p>
+          </div>
+
+          <div className="visa-buttons">
+            <button
+              className="visa-button issue-button"
+              onClick={() =>
+                handleIsuueClick(
+                  Number(VisaObj.issuancePrice),
+                  Number(VisaObj.visaId)
+                )
+              }
+            >
+              Issue
+            </button>
+
+            {VisaObj.renewalPrice !== 0 && (
+              <button
+                className="visa-button renew-button"
+                onClick={() =>
+                  handleRenewClick(
+                    Number(VisaObj.renewalPrice),
+                    Number(VisaObj.visaId)
+                  )
+                }
+              >
+                Renew
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
