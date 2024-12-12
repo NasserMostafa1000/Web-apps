@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Visa from "./Visa";
 import "../Styles/Home.css";
 import AboutUs from "../Components/AboutUs";
-var _HttpClient = "https://localhost:7116/api/";
+var _HttpClient = "https://ramysalama2000-001-site1.otempurl.com/api/";
 
 export default function Home() {
   const [visas, setVisas] = useState([]);
@@ -27,21 +27,21 @@ export default function Home() {
     fetchVisas();
   }, []);
 
-  // دالة لإظهار/إخفاء الشريط
   const toggleAboutUs = () => {
     setShowBar((prev) => !prev); // عكس القيمة الحالية
   };
 
   return (
     <div>
-      {/* عرض الفيز باستخدام map */}
       <div>
-        {visas.map((visa) => (
-          <Visa key={visa.visaId} VisaObj={visa} />
-        ))}
+        {visas.map(
+          (visa) =>
+            visa.moreDetails !== "غير متوفر" && (
+              <Visa key={visa.visaId} VisaObj={visa} />
+            )
+        )}
       </div>
 
-      {/* زر لعرض أو إخفاء "About Us" */}
       <div className="button-container">
         <button
           onClick={toggleAboutUs}
@@ -51,7 +51,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* إذا كانت حالة showBar صحيحة، يتم عرض "About Us" */}
       {showBar && (
         <div className="about-us-container">
           <AboutUs />
